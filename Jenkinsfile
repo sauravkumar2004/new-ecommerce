@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs "NodeJS"
+    }
+
     environment {
         DOCKER_IMAGE = 'react-ecommerce'
     }
@@ -12,9 +16,23 @@ pipeline {
             }
         }
 
+        stage('Setup Node.js') {
+            steps {
+                sh '''
+                    node --version
+                    npm --version
+                    which node
+                    which npm
+                '''
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '''
+                    npm install
+                    npm list
+                '''
             }
         }
 
@@ -26,7 +44,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE} .'
+                sh '''
+                    docker --version
+                    docker build -t ${DOCKER_IMAGE} .
+                '''
             }
         }
 
