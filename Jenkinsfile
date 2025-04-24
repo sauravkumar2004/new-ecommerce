@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs "NodeJs"
+        nodejs "NodeJs" // Make sure the label "NodeJs" exactly matches your Jenkins NodeJS tool installation
     }
 
     environment {
@@ -63,8 +63,9 @@ pipeline {
 
     post {
         always {
-            // Clean up workspace
-            cleanWs()
+            node {
+                cleanWs()
+            }
         }
         success {
             echo 'Pipeline completed successfully!'
